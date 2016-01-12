@@ -1,5 +1,5 @@
 {
-    "name": "hav/Cache",
+    "name": "hav/cache",
     "type": "library",
     "description": "A cache library that is implmeneted from PSR-6",
     "keywords": ["cache", "psr6"],
