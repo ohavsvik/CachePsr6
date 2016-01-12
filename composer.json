@@ -1,0 +1,19 @@
+{
+    "name": "hav/Cache",
+    "type": "library",
+    "description": "A cache library that is implmeneted from PSR-6",
+    "keywords": ["cache", "psr6"],
+    "homepage": "http://oskarhavsvik.se/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Oskar Havsvik",
+            "email": "ohavsvik@gmail.com",
+            "homepage": "http://oskarhavsvik.se",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    }
+}
