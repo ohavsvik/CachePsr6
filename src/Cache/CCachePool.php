@@ -47,7 +47,7 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
      *   If the $key string is not a legal value a \Psr\Cache\InvalidArgumentException
      *   MUST be thrown.
      *
-     * @return CacheItemInterface
+     * @return \Psr\Cache\CacheItemInterface
      *   The corresponding Cache Item.
      */
     public function getItem($key)
@@ -115,7 +115,6 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
      *
      * @param array $keys
      * An indexed array of keys of items to retrieve.
-     *
      * @throws InvalidArgumentException
      *   If any of the keys in $keys are not a legal value a \Psr\Cache\InvalidArgumentException
      *   MUST be thrown.
@@ -218,7 +217,7 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
             if ($key == $cacheItem->getKey()) {
                 $file = $cacheItem->filename($cacheItem->getKey());
                 if (is_file($file)) {
-                    @unlink($file);
+                    unlink($file);
                     unset($cacheItem);
                 } else {
                     return false;
@@ -260,7 +259,7 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
     /**
      * Persists a cache item immediately.
      *
-     * @param CacheItemInterface $item
+     * @param \Psr\Cache\CacheItemInterface $item
      *   The cache item to save.
      *
      * @return bool
@@ -282,7 +281,7 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
     /**
      * Sets a cache item to be persisted later.
      *
-     * @param CacheItemInterface $item
+     * @param \Psr\Cache\CacheItemInterface $item
      *   The cache item to save.
      *
      * @return bool

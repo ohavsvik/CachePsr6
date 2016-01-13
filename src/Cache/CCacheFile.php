@@ -17,13 +17,13 @@ class CCacheFile implements \Psr\Cache\CacheItemInterface
      * The expiration time
      * @var \DateTime
      */
-    private $expiration;
+    public $expiration;
 
     /**
      * The default expiration time
      * @var string
      */
-    private $defaultExpiration;
+    public $defaultExpiration;
 
     /**
      * The value associated with the object
@@ -159,10 +159,10 @@ class CCacheFile implements \Psr\Cache\CacheItemInterface
     }
 
     /**
-    * Sets the timezone that should be used for the expiration time
-    *
-    * @param DateTimeZone $timeZone The timezone used for the expiration time
-    */
+     * Sets the timezone that should be used for the expiration time
+     *
+     * @param DateTimeZone $timeZone The timezone used for the expiration time
+     */
     public function setTimeZone($timeZone)
     {
         $this->timeZone = $timeZone;
@@ -182,7 +182,7 @@ class CCacheFile implements \Psr\Cache\CacheItemInterface
      */
     public function expiresAt($expiration)
     {
-        $this->expiration = is_null($expiration) ? : $expiration;
+        $this->expiration = is_null($expiration) ? (new \DateTime($this->defaultExpiration, $this->timeZone)) : $expiration;
         return $this;
     }
 
