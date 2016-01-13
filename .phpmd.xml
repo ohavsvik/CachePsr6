@@ -15,7 +15,10 @@
         <exclude name="ElseExpression" />
     </rule>
 
-    <rule ref="rulesets/codesize.xml" />
+    <rule ref="rulesets/codesize.xml">
+        <exclude name="TooManyMethods" />
+    </rule>
+
 
     <rule ref="rulesets/controversial.xml">
         <exclude name="Superglobals" />
