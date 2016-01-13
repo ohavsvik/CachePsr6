@@ -1,3 +1,6 @@
 # phpunit
 coverage/
 coverage.clover
+# cache
+cacheitems/
+webroot/cacheitems/

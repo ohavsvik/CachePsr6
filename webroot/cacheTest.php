@@ -1,6 +1,6 @@
 <?php
 
-// Used for loadeing the classes
+// Used for loading the classes
 require "../autoloader.php";
 
 // Start a session
