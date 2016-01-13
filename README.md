@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ohavsvik/CachePsr6.svg?branch=master)](https://travis-ci.org/ohavsvik/CachePsr6)
+
 ## A PSR-6 cache library
 
 
