@@ -14,7 +14,6 @@
 spl_autoload_register(
     function ($class) {
         // project-specific namespace prefix
-        //$prefix = 'Foo\\Bar\\';
         $prefix = 'Anax\\';
         // base directory for the namespace prefix
         $base_dir = __DIR__ . '/src/';
@@ -42,7 +41,6 @@ spl_autoload_register(
 spl_autoload_register(
     function ($class) {
         // project-specific namespace prefix
-        //$prefix = 'Foo\\Bar\\';
         $prefix = 'Psr\\';
         // base directory for the namespace prefix
         $base_dir = __DIR__ . '/src/';

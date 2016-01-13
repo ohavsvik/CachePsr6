@@ -135,7 +135,8 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
 
         // Iterates all keys and gets the associated item
         $items = array();
-        for ($i=0; $i < count($keys); $i++) {
+        $nKeys = count($keys);
+        for ($i=0; $i < $nKeys; $i++) {
             $items[(string) $keys[$i]] = $this->getItem($keys[$i]);
         }
 
@@ -215,8 +216,13 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
 
         foreach ($this->cacheItems as $cacheItem) {
             if ($key == $cacheItem->getKey()) {
-                @unlink($cacheItem->filename($cacheItem->getKey()));
-                unset($cacheItem);
+                $file = $cacheItem->filename($cacheItem->getKey());
+                if (is_file($file)) {
+                    @unlink($file);
+                    unset($cacheItem);
+                } else {
+                    return false;
+                }
                 return true;
             }
         }
@@ -315,7 +321,7 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
         }
 
         // Resets the deffered array
-        $this->deferred = array();
+        $this->defferedItems = array();
         return true;
     }
 

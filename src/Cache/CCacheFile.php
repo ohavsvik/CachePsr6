@@ -15,7 +15,7 @@ class CCacheFile implements \Psr\Cache\CacheItemInterface
 
     /**
      * The expiration time
-     * @var DateTime
+     * @var \DateTime
      */
     private $expiration;
 
@@ -30,6 +30,12 @@ class CCacheFile implements \Psr\Cache\CacheItemInterface
      * @var mixed
      */
     private $value;
+
+    /**
+     * Determines the timezone used
+     * @var \DateTimeZone
+     */
+    public $timeZone;
 
 
     /**
@@ -48,7 +54,8 @@ class CCacheFile implements \Psr\Cache\CacheItemInterface
         $this->timeZone = is_null($timeZone) ?  new \DateTimeZone('Europe/London') : $timeZone;
         $this->defaultExpiration = '2999-12-12';
 
-        $this->expiration = is_null($expiration) ? new \DateTime($this->defaultExpiration, $this->timeZone) : $expiration;
+        $this->expiration = is_null($expiration) ?
+            new \DateTime($this->defaultExpiration, $this->timeZone) : $expiration;
     }
 
     /**
