@@ -52,6 +52,9 @@ before_script:
     - wget -c http://static.phpmd.org/php/latest/phpmd.phar
     - install --mode 0755 phpmd.phar $PWD/bin/phpmd
 
+    # Scrutinizer
+    - wget https://scrutinizer-ci.com/ocular.phar
+
     # Download dbwebb-validate
     - wget -O dbwebb-validate https://raw.githubusercontent.com/mosbth/dbwebb-cli/master/dbwebb2-validate
     - install --mode 0755 dbwebb-validate $PWD/bin/dbwebb-validate
@@ -86,4 +89,8 @@ script:
     - dbwebb-validate --course-repo . --publish --publish-to build/ .
 
     # phpunit
-    - phpunit --configuration .phpunit.xml
+    #- phpunit --configuration .phpunit.xml
+    - phpunit -c .phpunit.xml --coverage-clover coverage.clover test
+
+after_script:
+    - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

@@ -4,11 +4,17 @@ imports:
 #filter:
 #    excluded_paths: [vendor/*, test/*]
 
-build:
-    tests:
-        override:
-            -
-                command: 'phpunit --configuration .phpunit.xml'
-                coverage:
-                    file: 'coverage.clover'
-                    format: 'php-clover'
+filter:
+    excluded_paths: [test/*]
+
+# build:
+#     tests:
+#         override:
+#             -
+#                 command: 'phpunit --configuration .phpunit.xml'
+#                 coverage:
+#                     file: 'coverage.clover'
+#                     format: 'php-clover'
+
+tools:
+    external_code_coverage: true
