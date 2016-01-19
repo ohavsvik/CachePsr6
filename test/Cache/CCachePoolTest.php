@@ -85,7 +85,7 @@ class CCachePoolTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * $expectedException \Anax\Cache\InvalidKeyException
+     * @expectedException \Anax\Cache\InvalidKeyException
      */
     public function testInvalidKeyException()
     {
@@ -106,16 +106,5 @@ class CCachePoolTest extends \PHPUnit_Framework_TestCase
 
         $res = $this->cache->commit();
         $this->assertTrue($res, "Should be able to commit");
-    }
-
-    public function testSessions()
-    {
-        $this->cache->saveInSession(true);
-        $this->assertInternalType('array', $_SESSION['cacheItems'], "Should be an array");
-        $this->assertInternalType('array', $_SESSION['defferedItems'], "Should be an array");
-
-        $this->cache->clearSession();
-        $this->assertTrue(!isset($_SESSION['cacheItems']), "Should not be set");
-        $this->assertTrue(!isset($_SESSION['defferedItems']), "Should not be set");
     }
 }

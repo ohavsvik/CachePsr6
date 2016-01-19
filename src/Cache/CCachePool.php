@@ -20,18 +20,63 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
     private $defferedItems;
 
     /**
+     * The path to the cache items
+     * @var string
+     */
+    static public $path;
+
+    /**
      * Inits one array with the cached items and one with the deffered
      *
      */
     public function __construct()
     {
-        $this->cacheItems    = isset($_SESSION['cacheItems']) ? $_SESSION['cacheItems'] : [];
-        $this->defferedItems = isset($_SESSION['defferedItems']) ? $_SESSION['defferedItems'] : [];
+        //$this->cacheItems    = isset($_SESSION['cacheItems']) ? $_SESSION['cacheItems'] : [];
+        $this->defferedItems = [];
+
+        $this->path = self::getPath();
 
         // Creates a writable cache folder on the server
-        if (!is_dir('cacheitems')) {
-            mkdir('cacheitems', 0777, true);
+        if (!is_dir($this->path)) {
+            mkdir($this->path, 0777, true);
         }
+
+        $this->cacheItems = array();
+        $this->initCache();
+    }
+
+    /**
+     * Used to fill the array with existing cache items
+     *
+     * @return void
+     */
+    private function initCache()
+    {
+        // Init the cacheitems
+        $files = glob($this->path . '/*.val');
+        $expirations = glob($this->path . '/*.meta');
+
+        sort($files);
+        sort($expirations);
+
+        $count = COUNT($files);
+
+        for ($i = 0; $i < $count; $i++) {
+            $key = basename($files[$i]);
+            $key = preg_replace('/\\.[^.\\s]{3,4}$/', '', $key);
+
+            $expiration = unserialize(file_get_contents($expirations[$i]));
+            $this->cacheItems[] = new \Anax\Cache\CCacheFile($key, null, $expiration);
+        }
+    }
+
+    /**
+     * Returns the path where the cache items are stored
+     * @return string The path
+     */
+    public static function getPath()
+    {
+        return  __DIR__ . "/../../cacheitems/";
     }
 
     /**
@@ -97,16 +142,12 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
      */
     public function checkKey($key)
     {
-        try {
-            // The characters that are not legal/is invalid
-            $invalidValues = "/[\/\{\}\(\)\@\:\.\\\]/";
+        // The characters that are not legal/is invalid
+        $invalidValues = "/[\/\{\}\(\)\@\:\.\\\]/";
 
-            // Checks for matches in the key
-            if (preg_match_all($invalidValues, $key, $matches)) {
-                throw new \Anax\Cache\InvalidKeyException($matches);
-            }
-        } catch (\Anax\Cache\InvalidKeyException $e) {
-            echo  "Exception cought: ", $e;
+        // Checks for matches in the key
+        if (preg_match_all($invalidValues, $key, $matches)) {
+            throw new \Anax\Cache\InvalidKeyException($matches);
         }
     }
 
@@ -164,6 +205,8 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
         //Validates the key
         $this->checkKey($key);
 
+        // is_file
+
         foreach ($this->cacheItems as $cacheItem) {
             if ($cacheItem->getKey() == $key) {
                 return true;
@@ -180,13 +223,10 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
      */
     public function clear()
     {
-        // Clears the current session and finds all files in the cache folder
-        $this->clearSession();
-
         $this->cacheItems = array();
         $this->defferedItems = array();
 
-        $files = glob('cacheitems' . '/*');
+        $files = glob($this->path . '/*');
 
         if (!array_map('unlink', $files)) {
             return false;
@@ -275,6 +315,13 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
             return false;
         }
 
+        $file = $item->filename($item->getKey(), 'expiration');
+
+        // Checks if the file write failes and serializes the value
+        if (!file_put_contents($file, serialize($item->expiration))) {
+            return false;
+        }
+
         return true;
     }
 
@@ -322,35 +369,5 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
         // Resets the deffered array
         $this->defferedItems = array();
         return true;
-    }
-
-    /**
-     * Saves the current items/defferedItems in the session
-     *
-     * @param  bool $value If the items/defferedItems should be saved in the session
-     *
-     * @return void
-     */
-    public function saveInSession($value)
-    {
-        if ($value) {
-            $_SESSION['cacheItems']    = $this->cacheItems;
-            $_SESSION['defferedItems'] = $this->defferedItems;
-        }
-    }
-
-    /**
-     * Clears the current session
-     *
-     * @return void
-     */
-    public function clearSession()
-    {
-        if (isset($_SESSION['cacheItems'])) {
-            unset($_SESSION['cacheItems']);
-        }
-        if (isset($_SESSION['defferedItems'])) {
-            unset($_SESSION['defferedItems']);
-        }
     }
 }

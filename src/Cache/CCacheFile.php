@@ -89,9 +89,14 @@ class CCacheFile implements \Psr\Cache\CacheItemInterface
      *
      * @return string The filename.
      */
-    public function filename($key)
+    public function filename($key, $expiration = null)
     {
-        return 'cacheitems/' . $key;
+        if (is_null($expiration)) {
+            return \Anax\Cache\CCachePool::getPath() . '/' . $key . '.val';
+        }
+
+        // return \Anax\Cache\CCachePool::getPath() . '/'. $expiration .'/' . $key;
+        return \Anax\Cache\CCachePool::getPath() . '/' . $key . '.meta';
     }
 
     /**
@@ -132,7 +137,7 @@ class CCacheFile implements \Psr\Cache\CacheItemInterface
         $now = new \DateTime("now", $this->timeZone);
         $hasExpired = ($now > $this->expiration) ? true : false;
 
-        if (is_file($file) && !$hasExpired) {
+        if (is_file($file) && $hasExpired === false) {
             return true;
         } else {
             return false;
@@ -182,7 +187,12 @@ class CCacheFile implements \Psr\Cache\CacheItemInterface
      */
     public function expiresAt($expiration)
     {
-        $this->expiration = is_null($expiration) ? (new \DateTime($this->defaultExpiration, $this->timeZone)) : $expiration;
+        $this->expiration = $expiration;
+
+        if (is_null($expiration)) {
+            $this->expiration = new \DateTime($this->defaultExpiration, $this->timeZone);
+        }
+
         return $this;
     }
 

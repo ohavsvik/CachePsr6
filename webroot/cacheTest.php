@@ -3,9 +3,6 @@
 // Used for loading the classes
 require "../autoloader.php";
 
-// Start a session
-session_start();
-
 /**
  * Small example how to cache works
  *
@@ -33,15 +30,16 @@ if ($item->isHit()) {
     $content = "<p>HTML content  for cache</p> </br>";
     $item->set($content);
 
+    // How long should the cache item be active
+    $item->expiresAfter(1000);
+
     // Save the item in the cache
     $cache->save($item);
 }
 
 // Uncomment to clear the cache
-// $cache->clear();
+//$cache->clear();
 
 echo "<p>Content: <p>";
-echo $content;
-
-// Tell the cache to save the session
-$cache->saveInSession(true);
+echo $content . "<br/>";
+echo "Expires at: " . $item->expiration->format('Y-m-d H:i:s');

@@ -15,8 +15,6 @@ $app->url->setUrlType(\Anax\Url\CUrl::URL_CLEAN);
 
 //root
 $app->router->add('cache', function () use ($app) {
-    // Start the session
-    $app->session();
 
     // Set a fitting title
     $app->theme->setTitle('Cache example');
@@ -63,9 +61,6 @@ $app->router->add('cache', function () use ($app) {
             $debug = "The cache item was not found and was not saved because clear-cache is set.";
         }
     }
-
-    // Save the cache session
-    $app->cache->saveInSession(true);
 
     // Add a view with the results
     $app->views->add('cache/example', [

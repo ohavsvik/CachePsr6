@@ -2,5 +2,5 @@
 coverage/
 coverage.clover
 # cache
-cacheitems/
-webroot/cacheitems/
+# cacheitems/
+# webroot/cacheitems/
