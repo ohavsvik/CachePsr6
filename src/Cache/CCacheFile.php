@@ -92,11 +92,11 @@ class CCacheFile implements \Psr\Cache\CacheItemInterface
     public function filename($key, $expiration = null)
     {
         if (is_null($expiration)) {
-            return \Anax\Cache\CCachePool::getPath() . '/' . $key . '.val';
+            return __DIR__ . "/../../cacheitems/" . $key . '.val';
         }
 
         // return \Anax\Cache\CCachePool::getPath() . '/'. $expiration .'/' . $key;
-        return \Anax\Cache\CCachePool::getPath() . '/' . $key . '.meta';
+        return __DIR__ . "/../../cacheitems/" . $key . '.meta';
     }
 
     /**

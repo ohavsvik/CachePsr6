@@ -23,7 +23,7 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
      * The path to the cache items
      * @var string
      */
-    static public $path;
+    public $path;
 
     /**
      * Inits one array with the cached items and one with the deffered
@@ -34,7 +34,7 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
         //$this->cacheItems    = isset($_SESSION['cacheItems']) ? $_SESSION['cacheItems'] : [];
         $this->defferedItems = [];
 
-        $this->path = self::getPath();
+        $this->path = __DIR__ . "/../../cacheitems/";
 
         // Creates a writable cache folder on the server
         if (!is_dir($this->path)) {
@@ -68,15 +68,6 @@ class CCachePool implements \Psr\Cache\CacheItemPoolInterface
             $expiration = unserialize(file_get_contents($expirations[$i]));
             $this->cacheItems[] = new \Anax\Cache\CCacheFile($key, null, $expiration);
         }
-    }
-
-    /**
-     * Returns the path where the cache items are stored
-     * @return string The path
-     */
-    public static function getPath()
-    {
-        return  __DIR__ . "/../../cacheitems/";
     }
 
     /**
