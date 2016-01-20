@@ -14,6 +14,9 @@ class CCachePoolTest extends \PHPUnit_Framework_TestCase
         $this->cache = new \Anax\Cache\CCachePool();
     }
 
+    /**
+     * Tests hasItem()
+     */
     public function testHasItem()
     {
         $key = "key";
@@ -26,6 +29,9 @@ class CCachePoolTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($res2, "The item should exist in the cache");
     }
 
+    /**
+     * Tests generateKey()
+     */
     public function testGenerateKey()
     {
         $this->cache = new \Anax\Cache\CCachePool();
@@ -34,6 +40,9 @@ class CCachePoolTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('string', $res, "The key should be a string");
     }
 
+    /**
+     * Tests getItem()
+     */
     public function testGetItem()
     {
         $this->cache = new \Anax\Cache\CCachePool();
@@ -43,6 +52,9 @@ class CCachePoolTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Anax\Cache\CCacheFile', $res, "Should be an instance of \Anax\Cache\CCacheFile");
     }
 
+    /**
+     * Tests clear()
+     */
     public function testClearCache()
     {
         $this->cache = new \Anax\Cache\CCachePool();
@@ -52,6 +64,9 @@ class CCachePoolTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($res, "Should return true");
     }
 
+    /**
+     * Tests delete(), save()
+     */
     public function testDeleteGet()
     {
         $this->cache = new \Anax\Cache\CCachePool();
@@ -75,6 +90,9 @@ class CCachePoolTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($res, "The items should be deleted and return true");
     }
 
+    /**
+     * Tests delete when empty
+     */
     public function testDeleteEmpty()
     {
         $res = $this->cache->deleteItem('key');
@@ -93,6 +111,9 @@ class CCachePoolTest extends \PHPUnit_Framework_TestCase
         $this->cache->checkKey("bw3{w3fg}3awt(aher)234fwe/avwrv\vawr@daw:deasd");
     }
 
+    /**
+     * Tests saveDeffered() and commit()
+     */
     public function testSaveDefferedandCommit()
     {
         $item = $this->cache->getItem('key');

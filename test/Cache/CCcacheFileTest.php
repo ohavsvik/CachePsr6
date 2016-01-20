@@ -14,6 +14,9 @@ class CCacheFileTest extends \PHPUnit_Framework_TestCase
         $this->cache = new \Anax\Cache\CCachePool();
     }
 
+    /**
+     * Tests get() and isHit()
+     */
     public function testGetHit()
     {
         $key = "unique";
@@ -28,6 +31,9 @@ class CCacheFileTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(!is_null($res), "Should have a value");
     }
 
+    /**
+     * Test setTimezone()
+     */
     public function testSetTimeZone()
     {
         $timeZone = new \DateTimeZone('Europe/Amsterdam');
@@ -38,6 +44,9 @@ class CCacheFileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($item->timeZone, $timeZone);
     }
 
+    /**
+     * Tests expiresAt()
+     */
     public function testExpiresAt()
     {
         $timeZone = new \DateTimeZone('Europe/London');
@@ -56,6 +65,9 @@ class CCacheFileTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($item->expiration->format("Y-m-d H:i:s"), $compareDateTime->format("Y-m-d H:i:s"), "Should have the default expiration date set in the class");
     }
 
+    /**
+     * Tests expiresAfter()
+     */
     public function testExpiresAfter()
     {
         $timeZone = new \DateTimeZone('Europe/London');
@@ -63,7 +75,7 @@ class CCacheFileTest extends \PHPUnit_Framework_TestCase
         $item->setTimeZone($timeZone);
 
         $item->expiresAfter(10);
-        
+
         $compareDateTime = new \DateTime("now", $timeZone);
         $compareDateTime = $compareDateTime->add(new \DateInterval("PT10S"));
 
